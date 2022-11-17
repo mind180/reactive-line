@@ -13,17 +13,14 @@ export default class ReactiveLine extends LightningElement {
     @api orientation = 'horizontal';
     @api isDashed = false;
 
-    get d() {
-        if (!this.isShown) return null;
+    connectedCallback() {
+        if (!this.isShown) return null;// FIX
 
         const from = this.strPointToObject(this.from);
         const to = this.strPointToObject(this.to);
-        console.log(from);
 
         const directionName = this.getDirectionName(from, to);
-        console.log(directionName);
-        const positionStyle = position[directionName](from, to, this.width);
-        console.log(positionStyle);
+        const positionStyle = position[directionName](from, to, +this.width);
 
         this.style = {
             position: 'absolute',
@@ -31,10 +28,24 @@ export default class ReactiveLine extends LightningElement {
             left: positionStyle.x,
             height: positionStyle.height,
             width: positionStyle.width,
-            'stroke-dasharray': this.isDashed ? (this.width * 3 + " " + this.width * 2) : "",
-            'z-index': defaultZIndex
+            dasharray: this.isDashed ? (this.width * 3 + " " + this.width * 2) : ""
         };
+    }
 
+    get position() {
+        return `${'top: ' + this.style.top + 'px; ' +
+                  'left: ' + this.style.left + 'px; ' +
+                  'height: ' + this.style.height + 'px; ' +
+                  'width: ' + this.style.width + 'px' }`;
+    }
+
+    get path() {
+        const from = this.strPointToObject(this.from);
+        const to = this.strPointToObject(this.to);
+
+        const directionName = this.getDirectionName(from, to);
+        const positionStyle = position[directionName](from, to, +this.width);
+        
         const drawPath = pathForm[this.type][this.orientation][directionName];
         return drawPath(positionStyle.height, positionStyle.width, this.width);
     }
