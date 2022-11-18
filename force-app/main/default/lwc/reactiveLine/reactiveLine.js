@@ -2,8 +2,6 @@ import { LightningElement, api } from 'lwc';
 import { pathForm } from './pathFrom';
 import { position } from './position';
 
-const defaultZIndex = '100';
-
 export default class ReactiveLine extends LightningElement {
     @api isShown;
     @api from;
