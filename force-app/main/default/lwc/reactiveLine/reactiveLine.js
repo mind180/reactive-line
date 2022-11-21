@@ -3,7 +3,6 @@ import { pathForm } from './pathFrom';
 import { position } from './position';
 
 export default class ReactiveLine extends LightningElement {
-    @api isShown;
     @api from;
     @api to;
     @api width = 1;
@@ -13,8 +12,6 @@ export default class ReactiveLine extends LightningElement {
     @api color = 'black';
 
     connectedCallback() {
-        if (!this.isShown) return null;// FIX
-
         const from = this.strPointToObject(this.from);
         const to = this.strPointToObject(this.to);
 
