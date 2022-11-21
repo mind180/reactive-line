@@ -12,6 +12,10 @@ export default class ReactiveLine extends LightningElement {
     @api color = 'black';
 
     connectedCallback() {
+        this.initPositionStyle();
+    }
+
+    initPositionStyle() {
         const from = this.strPointToObject(this.from);
         const to = this.strPointToObject(this.to);
 
@@ -46,6 +50,14 @@ export default class ReactiveLine extends LightningElement {
         return drawPath(positionStyle.height, positionStyle.width, this.width);
     }
 
+    strPointToObject(pointAsString) {
+        const pointsArr = pointAsString.split(';');
+        const x = pointsArr[0];
+        const y = pointsArr[1];
+
+        return { x, y };
+    }
+
     getDirectionName(from ,to) {
         return this.getVerticalName(from, to) + this.getHorizontalName(from, to);
     }
@@ -70,13 +82,5 @@ export default class ReactiveLine extends LightningElement {
     
     isTop(from, to) {
         return from.y > to.y;
-    }
-
-    strPointToObject(pointAsString) {
-        const pointsArr = pointAsString.split(';');
-        const x = pointsArr[0];
-        const y = pointsArr[1];
-
-        return { x, y };
     }
 }
