@@ -10,6 +10,7 @@ export default class ReactiveLine extends LightningElement {
     @api type= 'straight';
     @api orientation = 'horizontal';
     @api isDashed = false;
+    @api color = 'black';
 
     connectedCallback() {
         if (!this.isShown) return null;// FIX
