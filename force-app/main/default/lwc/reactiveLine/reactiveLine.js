@@ -19,7 +19,6 @@ export default class ReactiveLine extends LightningElement {
         const positionStyle = position[directionName](from, to, +this.width);
 
         this.style = {
-            position: 'absolute',
             top: positionStyle.y,
             left: positionStyle.x,
             height: positionStyle.height,
@@ -32,7 +31,8 @@ export default class ReactiveLine extends LightningElement {
         return `${'top: ' + this.style.top + 'px; ' +
                   'left: ' + this.style.left + 'px; ' +
                   'height: ' + this.style.height + 'px; ' +
-                  'width: ' + this.style.width + 'px' }`;
+                  'width: ' + this.style.width + 'px;'  +
+                  'stroke-dasharray: ' +  this.style.dasharray}`;
     }
 
     get path() {
