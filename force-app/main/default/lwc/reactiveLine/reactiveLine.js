@@ -3,7 +3,6 @@ import { pathForm } from './pathFrom';
 import { position } from './position';
 
 export default class ReactiveLine extends LightningElement {
-    @api isShown;
     @api from;
     @api to;
     @api width = 1;
@@ -13,8 +12,10 @@ export default class ReactiveLine extends LightningElement {
     @api color = 'black';
 
     connectedCallback() {
-        if (!this.isShown) return null;// FIX
+        this.initPositionStyle();
+    }
 
+    initPositionStyle() {
         const from = this.strPointToObject(this.from);
         const to = this.strPointToObject(this.to);
 
@@ -22,7 +23,6 @@ export default class ReactiveLine extends LightningElement {
         const positionStyle = position[directionName](from, to, +this.width);
 
         this.style = {
-            position: 'absolute',
             top: positionStyle.y,
             left: positionStyle.x,
             height: positionStyle.height,
@@ -35,7 +35,8 @@ export default class ReactiveLine extends LightningElement {
         return `${'top: ' + this.style.top + 'px; ' +
                   'left: ' + this.style.left + 'px; ' +
                   'height: ' + this.style.height + 'px; ' +
-                  'width: ' + this.style.width + 'px' }`;
+                  'width: ' + this.style.width + 'px;'  +
+                  'stroke-dasharray: ' +  this.style.dasharray}`;
     }
 
     get path() {
@@ -47,6 +48,14 @@ export default class ReactiveLine extends LightningElement {
         
         const drawPath = pathForm[this.type][this.orientation][directionName];
         return drawPath(positionStyle.height, positionStyle.width, this.width);
+    }
+
+    strPointToObject(pointAsString) {
+        const pointsArr = pointAsString.split(';');
+        const x = pointsArr[0];
+        const y = pointsArr[1];
+
+        return { x, y };
     }
 
     getDirectionName(from ,to) {
@@ -73,13 +82,5 @@ export default class ReactiveLine extends LightningElement {
     
     isTop(from, to) {
         return from.y > to.y;
-    }
-
-    strPointToObject(pointAsString) {
-        const pointsArr = pointAsString.split(';');
-        const x = pointsArr[0];
-        const y = pointsArr[1];
-
-        return { x, y };
     }
 }
